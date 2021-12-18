@@ -3,3 +3,17 @@ body {
   margin: 0;
   background-color: #000;
 }
+
+#fsbtn {
+  position: absolute;
+  margin: 0.25em;
+  opacity: .25;
+  transition: 250ms;
+  bottom: 0;
+  right: 0;
+}
+
+#fsbtn:hover {
+  opacity: 1;
+  transition: 250ms;
+}
