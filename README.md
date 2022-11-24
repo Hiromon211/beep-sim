@@ -5,7 +5,7 @@ Or "FNF Character Test" LOL, I just want to call it like that HAHAHAHA, anyways,
 
 ## How do I run this?
 
-To run this, download the source code first, then you can use XAMPP or http-server to localhost this, or you can just go to [this page](https://hiromon211.github.io/beep-sim/).
+To run this, download the source code first, then you can use XAMPP or http-server to localhost this, or you can just go to [this page](https://atouu.github.io/beep-sim/).
 
 ## Credits
 
