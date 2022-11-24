@@ -94,6 +94,50 @@ export default class SarvDarkScene extends Phaser.Scene {
       })
     });
 
+    this.anims.create({
+      key: "sarvdarkleftt2",
+      frameRate: 30,
+      frames: this.anims.generateFrameNames("sarvdarktex", {
+        prefix: "SarvDarkLeft2",
+        zeroPad: 4,
+        start: 0,
+        end: 9,
+      })
+    });
+
+    this.anims.create({
+      key: "sarvdarkrightt2",
+      frameRate: 30,
+      frames: this.anims.generateFrameNames("sarvdarktex", {
+        prefix: "SarvDarkRight2",
+        zeroPad: 4,
+        start: 0,
+        end: 9,
+      })
+    });
+
+    this.anims.create({
+      key: "sarvdarkupp2",
+      frameRate: 30,
+      frames: this.anims.generateFrameNames("sarvdarktex", {
+        prefix: "SarvDarkUp2",
+        zeroPad: 4,
+        start: 0,
+        end: 14,
+      })
+    });
+
+    this.anims.create({
+      key: "sarvdarkdownn2",
+      frameRate: 30,
+      frames: this.anims.generateFrameNames("sarvdarktex", {
+        prefix: "SarvDarkDown2",
+        zeroPad: 4,
+        start: 0,
+        end: 14,
+      })
+    });
+
     this.sarvdarkanim = this.add.sprite(screenCenterX, screenCenterY, 'sarvdarktex', "SarvDarkIdle0000");
     this.sarvdarkanim.setScale(.75)
     this.sarvdarkanim.play("sarvdarkidlee", true);
@@ -114,18 +158,31 @@ export default class SarvDarkScene extends Phaser.Scene {
     if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) this.aUp.play();
 
     //Animations
-    if (this.cursors.left.isDown) {
-      this.sarvdarkanim.play('sarvdarkleftt', true);
-    } else if (this.cursors.right.isDown) {
-      this.sarvdarkanim.play('sarvdarkrightt', true);
-    } else if (this.cursors.down.isDown) {
-      this.sarvdarkanim.play('sarvdarkdownn', true);
-    } else if (this.cursors.up.isDown) {
-      this.sarvdarkanim.play("sarvdarkupp", true);
+    if (this.cursors.shift.isDown) {
+      if (this.cursors.left.isDown) {
+        this.sarvdarkanim.play('sarvdarkleftt2', true);
+      } else if (this.cursors.right.isDown) {
+        this.sarvdarkanim.play('sarvdarkrightt2', true);
+      } else if (this.cursors.down.isDown) {
+        this.sarvdarkanim.play('sarvdarkdownn2', true);
+      } else if (this.cursors.up.isDown) {
+        this.sarvdarkanim.play("sarvdarkupp2", true);
+      } else {
+        this.sarvdarkanim.play('sarvdarkidlee', true);
+      }
     } else {
-      this.sarvdarkanim.play('sarvdarkidlee', true);
+      if (this.cursors.left.isDown) {
+        this.sarvdarkanim.play('sarvdarkleftt', true);
+      } else if (this.cursors.right.isDown) {
+        this.sarvdarkanim.play('sarvdarkrightt', true);
+      } else if (this.cursors.down.isDown) {
+        this.sarvdarkanim.play('sarvdarkdownn', true);
+      } else if (this.cursors.up.isDown) {
+        this.sarvdarkanim.play("sarvdarkupp", true);
+      } else {
+        this.sarvdarkanim.play('sarvdarkidlee', true);
+      }
     }
-
 
   }
 }

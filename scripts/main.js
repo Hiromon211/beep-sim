@@ -33,7 +33,7 @@ export default class MainScene extends Phaser.Scene {
       strokeThickness: 6
     });
 
-    var sarvdk2Btn = this.add.text(100, 350, 'Sarv Dark 2', {
+    var sarvdemBtn = this.add.text(100, 350, 'Sarv Demon', {
       font: "65px Arial",
       fill: "#ffffff",
       align: "center",
@@ -41,15 +41,7 @@ export default class MainScene extends Phaser.Scene {
       strokeThickness: 6
     });
 
-    var sarvdemBtn = this.add.text(100, 450, 'Sarv Demon', {
-      font: "65px Arial",
-      fill: "#ffffff",
-      align: "center",
-      stroke: "#000000",
-      strokeThickness: 6
-    });
-
-    var selBtn = this.add.text(100, 550, 'Selever', {
+    var selBtn = this.add.text(100, 450, 'Selever', {
       font: "65px Arial",
       fill: "#ffffff",
       align: "center",
@@ -75,13 +67,6 @@ export default class MainScene extends Phaser.Scene {
       import("./sarv-dark.js").then( ({ default: SarvDarkScene}) => {
         this.scene.add("SarvDarkScene", SarvDarkScene);
         this.scene.start('SarvDarkScene');
-      })
-    }, this);
-
-    sarvdk2Btn.setInteractive().on('pointerdown', function(pointer) {
-      import("./sarv-dark2.js").then( ({ default: SarvDark2Scene}) => {
-        this.scene.add("SarvDark2Scene", SarvDark2Scene);
-        this.scene.start('SarvDark2Scene');
       })
     }, this);
 
