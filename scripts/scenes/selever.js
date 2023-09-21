@@ -6,14 +6,16 @@ export default class SeleverScene extends Phaser.Scene {
 
   preload() {
     //Variables
-    this.aUp;
-    this.aDown;
-    this.aLeft;
-    this.aRight;
+    this.audioUp;
+    this.audioDown;
+    this.audioLeft;
+    this.audioRight;
 
     this.cursors;
-    this.seleveranim;
+    this.seleverAnim;
     this.fpsTXT;
+
+    this.showFPS = window.settings.showFPS;
 
     //Loads
     this.load.image("background", "./assets/bg/mfm/menuDesat.png")
@@ -22,23 +24,29 @@ export default class SeleverScene extends Phaser.Scene {
     this.load.audio('selever-right-sound', './assets/selever/sel-right.ogg');
     this.load.audio('selever-down-sound', './assets/selever/sel-down.ogg');
     this.load.atlasXML('selevertex', './assets/selever/fuckboi_sheet.png', './assets/selever/fuckboi_sheet.xml');
+
   }
 
   create() {
     this.add.image(480, 360, 'background');
-    this.fpsTXT = this.add.text(14, 5, 'FPS: ', {
-      stroke: "#000000",
-      strokeThickness: 3
-    });
-    var screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
-    var screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-    this.aUp = this.sound.add('selever-up-sound');
-    this.aDown = this.sound.add('selever-down-sound');
-    this.aLeft = this.sound.add('selever-left-sound');
-    this.aRight = this.sound.add('selever-right-sound');
+
+    if (this.showFPS) {
+      this.fpsTXT = this.add.text(920, 20, 'FPS: ', {
+        font: "1.5em Arial",
+        stroke: "#000000",
+        strokeThickness: 3
+      });
+    }
+
+    const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+    const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+    this.audioUp = this.sound.add('selever-up-sound');
+    this.audioDown = this.sound.add('selever-down-sound');
+    this.audioLeft = this.sound.add('selever-left-sound');
+    this.audioRight = this.sound.add('selever-right-sound');
 
     this.anims.create({
-      key: "seleveridlee",
+      key: "SeleverIdle",
       frameRate: 30,
       frames: this.anims.generateFrameNames("selevertex", {
         prefix: "SelIdle",
@@ -51,7 +59,7 @@ export default class SeleverScene extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "seleverleftt",
+      key: "SeleverLeft",
       frameRate: 30,
       frames: this.anims.generateFrameNames("selevertex", {
         prefix: "SelLeft",
@@ -62,7 +70,7 @@ export default class SeleverScene extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "seleverrightt",
+      key: "SeleverRight",
       frameRate: 30,
       frames: this.anims.generateFrameNames("selevertex", {
         prefix: "SelRight",
@@ -73,7 +81,7 @@ export default class SeleverScene extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "seleverupp",
+      key: "SeleverUp",
       frameRate: 30,
       frames: this.anims.generateFrameNames("selevertex", {
         prefix: "SelUp",
@@ -84,7 +92,7 @@ export default class SeleverScene extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "seleverdownn",
+      key: "SeleverDown",
       frameRate: 30,
       frames: this.anims.generateFrameNames("selevertex", {
         prefix: "SelDown",
@@ -95,7 +103,7 @@ export default class SeleverScene extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "seleverheyy",
+      key: "SeleverHey",
       frameRate: 30,
       frames: this.anims.generateFrameNames("selevertex", {
         prefix: "SelHey",
@@ -105,9 +113,20 @@ export default class SeleverScene extends Phaser.Scene {
       })
     });
 
-    this.seleveranim = this.add.sprite(screenCenterX, screenCenterY, 'selevertex', "SelIdle0000");
-    this.seleveranim.setScale(.75)
-    this.seleveranim.play("seleveridlee", true);
+    this.seleverAnim = this.add.sprite(screenCenterX, screenCenterY, 'selevertex');
+    this.seleverAnim.setScale(.75)
+    this.seleverAnim.play("SeleverIdle", true);
+
+    this.add.text(20, 20, "Back", {
+      font: "1.5rem Arial",
+      fill: "#ffffff",
+      align: "center",
+      stroke: "#000000",
+      strokeThickness: 4
+    }).setInteractive({ cursor: 'pointer' }).on('pointerdown', async (pointer) => {
+      this.scene.stop()
+      this.scene.run("MainScene")
+    }, this);
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -115,29 +134,31 @@ export default class SeleverScene extends Phaser.Scene {
 
   update() {
     //Display FPS
-    var loop = this.sys.game.loop;
-    this.fpsTXT.setText(loop.actualFps.toFixed(0));
+    if (this.showFPS) {
+      const loop = this.sys.game.loop;
+      this.fpsTXT.setText(loop.actualFps.toFixed(0));
+    }
 
     //Play auidio once
-    if (Phaser.Input.Keyboard.JustDown(this.cursors.left)) this.aLeft.play();
-    if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) this.aRight.play();
-    if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) this.aDown.play();
-    if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) this.aUp.play();
+    if (Phaser.Input.Keyboard.JustDown(this.cursors.left)) this.audioLeft.play();
+    if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) this.audioRight.play();
+    if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) this.audioDown.play();
+    if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) this.audioUp.play();
 
     //Animations
 
     if (this.cursors.space.isDown) {
-      this.seleveranim.play('seleverheyy', true);
+      this.seleverAnim.play('SeleverHey', true);
     } else if (this.cursors.left.isDown) {
-      this.seleveranim.play('seleverleftt', true);
+      this.seleverAnim.play('SeleverLeft', true);
     } else if (this.cursors.right.isDown) {
-      this.seleveranim.play('seleverrightt', true);
+      this.seleverAnim.play('SeleverRight', true);
     } else if (this.cursors.down.isDown) {
-      this.seleveranim.play('seleverdownn', true);
+      this.seleverAnim.play('SeleverDown', true);
     } else if (this.cursors.up.isDown) {
-      this.seleveranim.play("seleverupp", true);
+      this.seleverAnim.play("SeleverUp", true);
     } else {
-      this.seleveranim.play('seleveridlee', true);
+      this.seleverAnim.play('SeleverIdle', true);
     }
 
 

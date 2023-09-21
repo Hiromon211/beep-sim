@@ -6,14 +6,16 @@ export default class SarvScene extends Phaser.Scene {
 
   preload() {
     //Variables
-    this.aUp;
-    this.aDown;
-    this.aLeft;
-    this.aRight;
+    this.audioUp;
+    this.audioDown;
+    this.audioLeft;
+    this.audioRight;
 
     this.cursors;
-    this.sarvanim;
+    this.sarvAnim;
     this.fpsTXT;
+
+    this.showFPS = window.settings.showFPS;
 
     //Loads
     this.load.image("background", "./assets/bg/mfm/menuDesat.png")
@@ -22,23 +24,29 @@ export default class SarvScene extends Phaser.Scene {
     this.load.audio('sarv-right-sound', './assets/sarv/sarv-right.ogg');
     this.load.audio('sarv-down-sound', './assets/sarv/sarv-down.ogg');
     this.load.atlasXML('sarvtex', './assets/sarv/sarvente_sheet.png', './assets/sarv/sarvente_sheet.xml');
+
   }
 
   create() {
     this.add.image(480, 360, 'background');
-    this.fpsTXT = this.add.text(14, 5, 'FPS: ', {
-      stroke: "#000000",
-      strokeThickness: 3
-    });
-    var screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
-    var screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-    this.aUp = this.sound.add('sarv-up-sound');
-    this.aDown = this.sound.add('sarv-down-sound');
-    this.aLeft = this.sound.add('sarv-left-sound');
-    this.aRight = this.sound.add('sarv-right-sound');
+
+    if (this.showFPS) {
+      this.fpsTXT = this.add.text(920, 20, 'FPS: ', {
+        font: "1.5em Arial",
+        stroke: "#000000",
+        strokeThickness: 3
+      });
+    }
+
+    const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+    const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+    this.audioUp = this.sound.add('sarv-up-sound');
+    this.audioDown = this.sound.add('sarv-down-sound');
+    this.audioLeft = this.sound.add('sarv-left-sound');
+    this.audioRight = this.sound.add('sarv-right-sound');
 
     this.anims.create({
-      key: "sarvidlee",
+      key: "SarvIdle",
       frameRate: 30,
       frames: this.anims.generateFrameNames("sarvtex", {
         prefix: "SarventeIdle",
@@ -51,7 +59,7 @@ export default class SarvScene extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "sarvleftt",
+      key: "SarvLeft",
       frameRate: 30,
       frames: this.anims.generateFrameNames("sarvtex", {
         prefix: "SarventeLeft",
@@ -62,7 +70,7 @@ export default class SarvScene extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "sarvrightt",
+      key: "SarvRight",
       frameRate: 30,
       frames: this.anims.generateFrameNames("sarvtex", {
         prefix: "SarventeRight",
@@ -73,7 +81,7 @@ export default class SarvScene extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "sarvupp",
+      key: "SarvUp",
       frameRate: 30,
       frames: this.anims.generateFrameNames("sarvtex", {
         prefix: "SarventeUp",
@@ -84,7 +92,7 @@ export default class SarvScene extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "sarvdownn",
+      key: "SarvDown",
       frameRate: 30,
       frames: this.anims.generateFrameNames("sarvtex", {
         prefix: "SarventeDown",
@@ -95,7 +103,7 @@ export default class SarvScene extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "sarvheyy",
+      key: "SarvHey",
       frameRate: 30,
       frames: this.anims.generateFrameNames("sarvtex", {
         prefix: "SarventeHey",
@@ -105,9 +113,20 @@ export default class SarvScene extends Phaser.Scene {
       })
     });
 
-    this.sarvanim = this.add.sprite(screenCenterX, screenCenterY, 'sarvtex', "SarventeIdle0000");
-    this.sarvanim.setScale(.75)
-    this.sarvanim.play("sarvidlee", true);
+    this.sarvAnim = this.add.sprite(screenCenterX, screenCenterY, 'sarvtex');
+    this.sarvAnim.setScale(.75)
+    this.sarvAnim.play("SarvIdle", true);
+
+    this.add.text(20, 20, "Back", {
+      font: "1.5rem Arial",
+      fill: "#ffffff",
+      align: "center",
+      stroke: "#000000",
+      strokeThickness: 4
+    }).setInteractive({ cursor: 'pointer' }).on('pointerdown', async (pointer) => {
+      this.scene.stop()
+      this.scene.run("MainScene")
+    }, this);
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -115,29 +134,31 @@ export default class SarvScene extends Phaser.Scene {
 
   update() {
     //Display FPS
-    var loop = this.sys.game.loop;
-    this.fpsTXT.setText(loop.actualFps.toFixed(0));
+    if (this.showFPS) {
+      const loop = this.sys.game.loop;
+      this.fpsTXT.setText(loop.actualFps.toFixed(0));
+    }
 
     //Play auidio once
-    if (Phaser.Input.Keyboard.JustDown(this.cursors.left)) this.aLeft.play();
-    if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) this.aRight.play();
-    if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) this.aDown.play();
-    if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) this.aUp.play();
+    if (Phaser.Input.Keyboard.JustDown(this.cursors.left)) this.audioLeft.play();
+    if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) this.audioRight.play();
+    if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) this.audioDown.play();
+    if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) this.audioUp.play();
 
     //Animations
-    
+
     if (this.cursors.space.isDown) {
-      this.sarvanim.play("sarvheyy", true);
+      this.sarvAnim.play("SarvHey", true);
     } else if (this.cursors.left.isDown) {
-      this.sarvanim.play('sarvleftt', true);
+      this.sarvAnim.play('SarvLeft', true);
     } else if (this.cursors.right.isDown) {
-      this.sarvanim.play('sarvrightt', true);
+      this.sarvAnim.play('SarvRight', true);
     } else if (this.cursors.down.isDown) {
-      this.sarvanim.play('sarvdownn', true);
+      this.sarvAnim.play('SarvDown', true);
     } else if (this.cursors.up.isDown) {
-      this.sarvanim.play("sarvupp", true);
+      this.sarvAnim.play("SarvUp", true);
     } else {
-      this.sarvanim.play('sarvidlee', true);
+      this.sarvAnim.play('SarvIdle', true);
     }
 
 

@@ -4,16 +4,16 @@ body {
   background-color: #000;
 }
 
-#fsbtn {
+#fsBtn {
   position: absolute;
+  aspect-ratio: 1;
   margin: 0.25em;
-  opacity: .25;
-  transition: 250ms;
-  bottom: 0;
-  right: 0;
+  opacity: .5;
+  top: 0.2em;
+  right: 0.2em;
+  transition: opacity ease-in-out 150ms;
 }
 
-#fsbtn:hover {
+#fsBtn:hover {
   opacity: 1;
-  transition: 250ms;
 }
